@@ -1,4 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+
+
 
 namespace RhythmsGonnaGetYou
 {
@@ -8,12 +15,7 @@ namespace RhythmsGonnaGetYou
     // EXAMPLE
     // 
     // DATA
-    //  Album
-    // 
-    //     Id
-    //     Title
-    //     IsExplicit
-    //     ReleaseDate
+
     // 
     // Band
     //     Id
@@ -41,6 +43,41 @@ namespace RhythmsGonnaGetYou
     // View all bands that are signed
     // View all bands that are not signed
     // Quit the program
+
+    class Album
+    {
+        public int AlbumId { get; set; }
+
+        public string Title { get; set; }
+
+        public bool IsExplict { get; set; }
+
+        // public date MyProperty { get; set; }
+
+    }
+    a
+    class Band
+    {
+        public int BandId { get; set; }
+        public string Name { get; set; }
+        public string CountryOfOrigin { get; set; }
+        public int NumberOfMembers { get; set; }
+        public string Website { get; set; }
+        public string Style { get; set; }
+        public bool IsSigned { get; set; }
+        public string ContactName { get; set; }
+        public string ContactPhoneNumber { get; set; }
+    }
+    class RhythmContext : DbContext
+    {
+        public DbSet<Album> Albums { get; set; }
+        public DbSet<Band> Bands { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("server=localhost;database=Rhythm");
+        }
+    }
     class Program
     {
         static void Main(string[] args)
@@ -104,13 +141,13 @@ namespace RhythmsGonnaGetYou
                     hasQuitApplication = true;
                 }
 
-                if (choice == )
-      }
 
 
 
 
 
+
+
+            }
         }
     }
-}
