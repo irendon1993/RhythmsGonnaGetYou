@@ -52,10 +52,13 @@ namespace RhythmsGonnaGetYou
 
         public bool IsExplict { get; set; }
 
-        // public date MyProperty { get; set; }
+        public DateTime MyProperty { get; set; }
+
+        public int BandId { get; set; }
+        public Band band { get; set; }
 
     }
-    a
+
     class Band
     {
         public int BandId { get; set; }
@@ -64,15 +67,18 @@ namespace RhythmsGonnaGetYou
         public int NumberOfMembers { get; set; }
         public string Website { get; set; }
         public string Style { get; set; }
-        public bool IsSigned { get; set; }
+        public bool IsSIgned { get; set; }
         public string ContactName { get; set; }
         public string ContactPhoneNumber { get; set; }
+
+        public List<Album> Albums { get; set; }
     }
     class RhythmContext : DbContext
     {
         public DbSet<Album> Albums { get; set; }
         public DbSet<Band> Bands { get; set; }
 
+        // BOILER PLATE
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("server=localhost;database=Rhythm");
@@ -82,6 +88,12 @@ namespace RhythmsGonnaGetYou
     {
         static void Main(string[] args)
         {
+            var context = new RhythmContext();
+
+            var bands = context.Bands.Include(band => band.Albums);
+
+            var bandCount = bands.Count();
+            Console.WriteLine($"There are {bandCount} bands!");
             // Greet User
             Console.WriteLine("Hello, welcome to the Record Company Database");
 
@@ -95,7 +107,7 @@ namespace RhythmsGonnaGetYou
                 Console.WriteLine("What would you like to do?");
                 Console.WriteLine("Would you like to add a new band?: ADDBAND");
                 Console.WriteLine("Would you like to view all the bands?: VIEW");
-                Console.WriteLine("Would you like to add an album?: ADDALBUM");
+                Console.WriteLine("Would you like to add an album for a band?: ADDALBUM");
                 Console.WriteLine("Would you like let a band go?: FIRE");
                 Console.WriteLine("Would you like to resign a band?: RESIGN");
                 Console.WriteLine("Would you like to view a band's albums?: DISCOGRAPHY");
@@ -106,7 +118,37 @@ namespace RhythmsGonnaGetYou
                 var choice = Console.ReadLine().ToUpper();
                 if (choice == "ADDBAND")
                 {
+                  Console.WriteLine("What is the new band's name?");
+                  var name = Console.ReadLine();
+                  Console.WriteLine("What is the new band's country of origin?");
+                  var countryOfOrigin = Console.ReadLine();
+                  Console.WriteLine("How many members are in the new band?");
+                  var numberOfMembers = int.Parse(Console.ReadLine());
+                  Console.WriteLine("What is the new band's website?");
+                  var website = Console.ReadLine();
+                  Console.WriteLine("What is the new band's style?");
+                  var style = Console.ReadLine();
+                  Console.WriteLine("Is the new band signed?");
+                  var isSigned = Boolean.Parse(Console.ReadLine());
+                  Console.WriteLine("What is the new band's contact name?");
+                  var contactName = Console.ReadLine();
+                  Console.WriteLine("What is the new band's contact phone number?");
+                  var contactPhoneNumber = Console.ReadLine();
 
+                  var newBand = new Band
+                  {
+                    Name = name,
+                    CountryOfOrigin = countryOfOrigin,
+                    NumberOfMembers = numberOfMembers,
+                    Website = website,
+                    Style = style,
+                    IsSIgned = isSigned,
+                    ContactName = contactName,
+                    ContactPhoneNumber = contactPhoneNumber
+                  };
+
+                  context.Bands.Add(newBand);
+                  context.SaveChanges();
                 }
                 if (choice == "VIEW")
                 {
@@ -128,7 +170,7 @@ namespace RhythmsGonnaGetYou
                 {
 
                 }
-                if (choice == "ROTtER")
+                if (choice == "ROSTER")
                 {
 
                 }
@@ -151,3 +193,4 @@ namespace RhythmsGonnaGetYou
             }
         }
     }
+}
