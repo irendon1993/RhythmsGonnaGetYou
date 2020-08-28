@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+
 
 
 
@@ -46,22 +45,22 @@ namespace RhythmsGonnaGetYou
 
     class Album
     {
-        public int AlbumId { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
         public bool IsExplict { get; set; }
 
-        public DateTime MyProperty { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public int BandId { get; set; }
-        public Band band { get; set; }
+        public Band Band { get; set; }
 
     }
 
     class Band
     {
-        public int BandId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string CountryOfOrigin { get; set; }
         public int NumberOfMembers { get; set; }
@@ -71,9 +70,9 @@ namespace RhythmsGonnaGetYou
         public string ContactName { get; set; }
         public string ContactPhoneNumber { get; set; }
 
-        public List<Album> Albums { get; set; }
+        // public List<Album> Albums { get; set; }
     }
-    class RhythmContext : DbContext
+    class RhythmGonnaGetYouContext : DbContext
     {
         public DbSet<Album> Albums { get; set; }
         public DbSet<Band> Bands { get; set; }
@@ -88,12 +87,10 @@ namespace RhythmsGonnaGetYou
     {
         static void Main(string[] args)
         {
-            var context = new RhythmContext();
+            var context = new RhythmGonnaGetYouContext();
 
-            var bands = context.Bands.Include(band => band.Albums);
-
-            var bandCount = bands.Count();
-            Console.WriteLine($"There are {bandCount} bands!");
+            var albums = context.Albums.Include(album => album.Band);
+            var bands = context.Bands;
             // Greet User
             Console.WriteLine("Hello, welcome to the Record Company Database");
 
@@ -111,6 +108,7 @@ namespace RhythmsGonnaGetYou
                 Console.WriteLine("Would you like let a band go?: FIRE");
                 Console.WriteLine("Would you like to resign a band?: RESIGN");
                 Console.WriteLine("Would you like to view a band's albums?: DISCOGRAPHY");
+                Console.WriteLine("Would you like to");
                 Console.WriteLine("Would you like to view all the bands signed?: ROSTER");
                 Console.WriteLine("Would you like to view all unsigned bands?: UNSIGNED");
                 Console.WriteLine("Would you like to exit the database?: QUIT");
@@ -118,53 +116,91 @@ namespace RhythmsGonnaGetYou
                 var choice = Console.ReadLine().ToUpper();
                 if (choice == "ADDBAND")
                 {
-                  Console.WriteLine("What is the new band's name?");
-                  var name = Console.ReadLine();
-                  Console.WriteLine("What is the new band's country of origin?");
-                  var countryOfOrigin = Console.ReadLine();
-                  Console.WriteLine("How many members are in the new band?");
-                  var numberOfMembers = int.Parse(Console.ReadLine());
-                  Console.WriteLine("What is the new band's website?");
-                  var website = Console.ReadLine();
-                  Console.WriteLine("What is the new band's style?");
-                  var style = Console.ReadLine();
-                  Console.WriteLine("Is the new band signed?");
-                  var isSigned = Boolean.Parse(Console.ReadLine());
-                  Console.WriteLine("What is the new band's contact name?");
-                  var contactName = Console.ReadLine();
-                  Console.WriteLine("What is the new band's contact phone number?");
-                  var contactPhoneNumber = Console.ReadLine();
+                    Console.WriteLine("What is the new band's name?");
+                    var name = Console.ReadLine();
+                    Console.WriteLine("What is the new band's country of origin?");
+                    var countryOfOrigin = Console.ReadLine();
+                    Console.WriteLine("How many members are in the new band?");
+                    var numberOfMembers = int.Parse(Console.ReadLine());
+                    Console.WriteLine("What is the new band's website?");
+                    var website = Console.ReadLine();
+                    Console.WriteLine("What is the new band's style?");
+                    var style = Console.ReadLine();
+                    Console.WriteLine("Is the new band signed?");
+                    var isSigned = Boolean.Parse(Console.ReadLine());
+                    Console.WriteLine("What is the new band's contact name?");
+                    var contactName = Console.ReadLine();
+                    Console.WriteLine("What is the new band's contact phone number?");
+                    var contactPhoneNumber = Console.ReadLine();
 
-                  var newBand = new Band
-                  {
-                    Name = name,
-                    CountryOfOrigin = countryOfOrigin,
-                    NumberOfMembers = numberOfMembers,
-                    Website = website,
-                    Style = style,
-                    IsSIgned = isSigned,
-                    ContactName = contactName,
-                    ContactPhoneNumber = contactPhoneNumber
-                  };
+                    var newBand = new Band
+                    {
+                        Name = name,
+                        CountryOfOrigin = countryOfOrigin,
+                        NumberOfMembers = numberOfMembers,
+                        Website = website,
+                        Style = style,
+                        IsSIgned = isSigned,
+                        ContactName = contactName,
+                        ContactPhoneNumber = contactPhoneNumber
+                    };
 
-                  context.Bands.Add(newBand);
-                  context.SaveChanges();
+                    context.Bands.Add(newBand);
+                    context.SaveChanges();
                 }
                 if (choice == "VIEW")
                 {
-
+                    foreach (var band in bands)
+                    {
+                        Console.WriteLine(band.Name);
+                    }
+                    // var viewBands = bands.Select(band => $"{band.Name}");
+                    // Console.WriteLine(viewBands);
                 }
                 if (choice == "ADDALBUM")
                 {
+                    Console.WriteLine("What is the new album's title?");
+                    var title = Console.ReadLine();
+                    
+                     Console.WriteLine("Is the new album explicit?");
+                    var isExplict = Boolean.Parse(Console.ReadLine());
 
+                    Console.WriteLine("When was the Album released?");
+                    var releaseDate = DateTime.Parse(Console.ReadLine());
+
+                    var newAlbum = new Album
+                    {
+                      Title = title,
+                      IsExplict = isExplict,
+                      ReleaseDate = releaseDate
+                    };
+                     context.Albums.Add(newAlbum);
+                     context.SaveChanges();
                 }
                 if (choice == "FIRE")
                 {
+                  Console.WriteLine("What band would you like to let go?");
+                  var firedBand = Console.ReadLine();
+
+                  var existingBandToFire = context.Bands.FirstOrDefault(band => band.Name == firedBand);
+
+                  if (existingBandToFire != null)
+                  {
+                    existingBandToFire.IsSIgned = false;
+                  }
 
                 }
                 if (choice == "RESIGN")
                 {
+                   Console.WriteLine("What band would you like to sign?");
+                  var firedBand = Console.ReadLine();
 
+                  var existingBandToSign = context.Bands.FirstOrDefault(band => band.Name == signedBand);
+
+                  if (existingBandToSign != null)
+                  {
+                    existingBandToSign.IsSIgned = false;
+                  }
                 }
                 if (choice == "DISCOGRAPHY")
                 {
