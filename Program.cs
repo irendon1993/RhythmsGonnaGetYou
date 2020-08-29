@@ -49,7 +49,7 @@ namespace RhythmsGonnaGetYou
 
         public string Title { get; set; }
 
-        public bool IsExplict { get; set; }
+        public bool IsExplicit { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
@@ -66,7 +66,7 @@ namespace RhythmsGonnaGetYou
         public int NumberOfMembers { get; set; }
         public string Website { get; set; }
         public string Style { get; set; }
-        public bool IsSIgned { get; set; }
+        public bool IsSigned { get; set; }
         public string ContactName { get; set; }
         public string ContactPhoneNumber { get; set; }
 
@@ -140,7 +140,7 @@ namespace RhythmsGonnaGetYou
                         NumberOfMembers = numberOfMembers,
                         Website = website,
                         Style = style,
-                        IsSIgned = isSigned,
+                        IsSigned = isSigned,
                         ContactName = contactName,
                         ContactPhoneNumber = contactPhoneNumber
                     };
@@ -161,46 +161,50 @@ namespace RhythmsGonnaGetYou
                 {
                     Console.WriteLine("What is the new album's title?");
                     var title = Console.ReadLine();
-                    
-                     Console.WriteLine("Is the new album explicit?");
+
+                    Console.WriteLine("Is the new album explicit?");
                     var isExplict = Boolean.Parse(Console.ReadLine());
 
                     Console.WriteLine("When was the Album released?");
                     var releaseDate = DateTime.Parse(Console.ReadLine());
 
+                    Console.WriteLine("What is the band Id for the new album?");
+                    var bandId = int.Parse(Console.ReadLine());
+
                     var newAlbum = new Album
                     {
-                      Title = title,
-                      IsExplict = isExplict,
-                      ReleaseDate = releaseDate
+                        Title = title,
+                        IsExplicit = isExplict,
+                        ReleaseDate = releaseDate,
+                        BandId = bandId
                     };
-                     context.Albums.Add(newAlbum);
-                     context.SaveChanges();
+                    context.Albums.Add(newAlbum);
+                    context.SaveChanges();
                 }
                 if (choice == "FIRE")
                 {
-                  Console.WriteLine("What band would you like to let go?");
-                  var firedBand = Console.ReadLine();
+                    Console.WriteLine("What band would you like to let go?");
+                    var fireBand = Console.ReadLine();
 
-                  var existingBandToFire = context.Bands.FirstOrDefault(band => band.Name == firedBand);
+                    var existingBandToFire = context.Bands.FirstOrDefault(band => band.Name == fireBand);
 
-                  if (existingBandToFire != null)
-                  {
-                    existingBandToFire.IsSIgned = false;
-                  }
+                    if (existingBandToFire != null)
+                    {
+                        existingBandToFire.IsSigned = false;
+                    }
 
                 }
                 if (choice == "RESIGN")
                 {
-                   Console.WriteLine("What band would you like to sign?");
-                  var firedBand = Console.ReadLine();
+                    Console.WriteLine("What band would you like to sign?");
+                    var signBand = Console.ReadLine();
 
-                  var existingBandToSign = context.Bands.FirstOrDefault(band => band.Name == signedBand);
+                    var existingBandToSign = context.Bands.FirstOrDefault(band => band.Name == signBand);
 
-                  if (existingBandToSign != null)
-                  {
-                    existingBandToSign.IsSIgned = false;
-                  }
+                    if (existingBandToSign != null)
+                    {
+                        existingBandToSign.IsSigned = false;
+                    }
                 }
                 if (choice == "DISCOGRAPHY")
                 {
