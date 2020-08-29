@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,7 +71,7 @@ namespace RhythmsGonnaGetYou
         public string ContactName { get; set; }
         public string ContactPhoneNumber { get; set; }
 
-        // public List<Album> Albums { get; set; }
+        public List<Album> Albums { get; set; }
     }
     class RhythmGonnaGetYouContext : DbContext
     {
@@ -89,7 +90,6 @@ namespace RhythmsGonnaGetYou
         {
             var context = new RhythmGonnaGetYouContext();
 
-            var albums = context.Albums.Include(album => album.Band);
             var bands = context.Bands;
             // Greet User
             Console.WriteLine("Hello, welcome to the Record Company Database");
@@ -212,13 +212,18 @@ namespace RhythmsGonnaGetYou
                 {
                     Console.WriteLine("What is the band's Id discography would you like to see");
                     var discography = int.Parse(Console.ReadLine());
-
-                    foreach (var discography)
-
-
-
-
+                    var albums = context.Albums.Include(album => album.Band);
+                    var albumsToView = albums.Where(album => album.Band.Id == discography);
+                    foreach (var album in albumsToView)
+                    {
+                        Console.WriteLine(album.Title);
+                    }
                 }
+
+
+
+
+
                 if (choice == "ORDER")
                 {
 
