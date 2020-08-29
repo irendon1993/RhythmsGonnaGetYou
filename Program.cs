@@ -108,7 +108,7 @@ namespace RhythmsGonnaGetYou
                 Console.WriteLine("Would you like let a band go?: FIRE");
                 Console.WriteLine("Would you like to resign a band?: RESIGN");
                 Console.WriteLine("Would you like to view a band's albums?: DISCOGRAPHY");
-                Console.WriteLine("Would you like to");
+                Console.WriteLine("Would you like to see the timeline of Albums: ORDER");
                 Console.WriteLine("Would you like to view all the bands signed?: ROSTER");
                 Console.WriteLine("Would you like to view all unsigned bands?: UNSIGNED");
                 Console.WriteLine("Would you like to exit the database?: QUIT");
@@ -191,6 +191,7 @@ namespace RhythmsGonnaGetYou
                     if (existingBandToFire != null)
                     {
                         existingBandToFire.IsSigned = false;
+                        context.SaveChanges();
                     }
 
                 }
@@ -203,20 +204,46 @@ namespace RhythmsGonnaGetYou
 
                     if (existingBandToSign != null)
                     {
-                        existingBandToSign.IsSigned = false;
+                        existingBandToSign.IsSigned = true;
+                        context.SaveChanges();
                     }
                 }
                 if (choice == "DISCOGRAPHY")
+                {
+                    Console.WriteLine("What is the band's Id discography would you like to see");
+                    var discography = int.Parse(Console.ReadLine());
+
+                    foreach (var discography)
+
+
+
+
+                }
+                if (choice == "ORDER")
                 {
 
                 }
                 if (choice == "ROSTER")
                 {
-
+                    foreach (var band in bands)
+                    {
+                        if (band.IsSigned == true)
+                        {
+                            Console.WriteLine($"{band.Name} is signed");
+                        }
+                        context.SaveChanges();
+                    }
                 }
                 if (choice == "UNSIGNED")
                 {
-
+                    foreach (var band in bands)
+                    {
+                        if (band.IsSigned == false)
+                        {
+                            Console.WriteLine($"{band.Name} is not signed");
+                        }
+                        context.SaveChanges();
+                    }
                 }
                 if (choice == "QUIT")
                 {
