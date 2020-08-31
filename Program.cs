@@ -91,6 +91,7 @@ namespace RhythmsGonnaGetYou
             var context = new RhythmGonnaGetYouContext();
 
             var bands = context.Bands;
+            var albums = context.Albums.Include(album => album.Band);
             // Greet User
             Console.WriteLine("Hello, welcome to the Record Company Database");
 
@@ -212,7 +213,6 @@ namespace RhythmsGonnaGetYou
                 {
                     Console.WriteLine("What is the band's Id discography would you like to see");
                     var discography = int.Parse(Console.ReadLine());
-                    var albums = context.Albums.Include(album => album.Band);
                     var albumsToView = albums.Where(album => album.Band.Id == discography);
                     foreach (var album in albumsToView)
                     {
@@ -220,14 +220,16 @@ namespace RhythmsGonnaGetYou
                     }
                 }
 
-
-
-
-
                 if (choice == "ORDER")
                 {
 
+                    var orderBy = albums.OrderBy(albums => albums.ReleaseDate);
+                    foreach (var album in orderBy)
+                    {
+                        Console.WriteLine(album.Title);
+                    }
                 }
+
                 if (choice == "ROSTER")
                 {
                     foreach (var band in bands)
