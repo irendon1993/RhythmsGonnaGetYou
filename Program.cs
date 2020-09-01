@@ -29,8 +29,6 @@ namespace RhythmsGonnaGetYou
     //     ContactPhoneNumber
     // 
     // 
-    // 
-    // 
     // ALGORITHM
     // Create a Menu
     // Add a new band
@@ -92,6 +90,7 @@ namespace RhythmsGonnaGetYou
 
             var bands = context.Bands;
             var albums = context.Albums.Include(album => album.Band);
+
             // Greet User
             Console.WriteLine("Hello, welcome to the Record Company Database");
 
@@ -155,8 +154,7 @@ namespace RhythmsGonnaGetYou
                     {
                         Console.WriteLine(band.Name);
                     }
-                    // var viewBands = bands.Select(band => $"{band.Name}");
-                    // Console.WriteLine(viewBands);
+
                 }
                 if (choice == "ADDALBUM")
                 {
@@ -166,7 +164,7 @@ namespace RhythmsGonnaGetYou
                     Console.WriteLine("Is the new album explicit?");
                     var isExplict = Boolean.Parse(Console.ReadLine());
 
-                    Console.WriteLine("When was the Album released?");
+                    Console.WriteLine("When was the Album released? Example:Jan 01 2001");
                     var releaseDate = DateTime.Parse(Console.ReadLine());
 
                     Console.WriteLine("What is the band Id for the new album?");
